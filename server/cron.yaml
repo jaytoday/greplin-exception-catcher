@@ -1,0 +1,8 @@
+cron:
+- description: four times daily stats aggregation
+  url: /tasks/aggregate
+  schedule: every 6 hours synchronized
+- description: daily email
+  url: /tasks/email
+  schedule: every day 13:00
+  timezone: America/Los_Angeles

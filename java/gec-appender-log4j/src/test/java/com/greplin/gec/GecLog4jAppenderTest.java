@@ -16,9 +16,11 @@
 
 package com.greplin.gec;
 
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.apache.log4j.Level;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +31,7 @@ import java.io.StringWriter;
 /**
  * Tests for the GecAppender.
  */
-public class GecAppenderTest {
+public class GecLog4jAppenderTest {
   private static final String ENVIRONMENT = "prod";
   private static final String PROJECT = "secretTown";
   private static final String SERVER_NAME = "secretTown FE 1";
@@ -37,15 +39,15 @@ public class GecAppenderTest {
   private static final String MESSAGE = "Illegal in 50 states";
   private static final String TYPE = IllegalArgumentException.class.getCanonicalName();
 
-  GecAppender appender;
+  GecLog4jAppender appender;
 
 
   @Before
   public void setUp() {
-    appender = new GecAppender();
-    appender.setEnvironment(ENVIRONMENT);
-    appender.setProject(PROJECT);
-    appender.setServerName(SERVER_NAME);
+    this.appender = new GecLog4jAppender();
+    this.appender.setEnvironment(ENVIRONMENT);
+    this.appender.setProject(PROJECT);
+    this.appender.setServerName(SERVER_NAME);
   }
 
   @Test
@@ -54,7 +56,7 @@ public class GecAppenderTest {
       throw new IllegalArgumentException(MESSAGE);
     } catch (IllegalArgumentException e) {
       StringWriter writer = new StringWriter();
-      appender.writeFormattedException(LOG_MESSAGE, e, writer);
+      this.appender.writeFormattedException(LOG_MESSAGE, e, Level.ERROR, writer);
 
       JsonNode root = parseJson(writer.toString());
       assertField(root, "project", PROJECT);
@@ -70,7 +72,7 @@ public class GecAppenderTest {
   @Test
   public void testNonExceptionAppender() throws IOException {
     StringWriter writer = new StringWriter();
-    appender.writeFormattedException("Error while rendering request", writer);
+    this.appender.writeFormattedException("Error while rendering request", Level.ERROR, writer);
 
     JsonNode root = parseJson(writer.toString());
     assertField(root, "project", PROJECT);
@@ -79,7 +81,7 @@ public class GecAppenderTest {
     assertField(root, "message", LOG_MESSAGE);
     assertField(root, "logMessage", LOG_MESSAGE);
     assertField(root, "type", "N/A");
-    String backtrace = root.path("backtrace").getTextValue();
+    String backtrace = root.path("backtrace").asText();
     Assert.assertTrue(backtrace.contains("testNonExceptionAppender"));
     Assert.assertFalse(backtrace.contains("writeFormattedException"));
   }
@@ -103,6 +105,6 @@ public class GecAppenderTest {
    * @param value the expected value
    */
   private void assertField(JsonNode root, String field, String value) {
-    Assert.assertEquals(value, root.path(field).getTextValue());
+    Assert.assertEquals(value, root.path(field).asText());
   }
 }

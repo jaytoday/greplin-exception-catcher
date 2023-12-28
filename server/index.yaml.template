@@ -1,0 +1,124 @@
+indexes:
+
+#######################
+# Indexes for errors. #
+#######################
+
+- kind: LoggedErrorV2_<version>
+  properties:
+  - name: active
+  - name: firstOccurrence
+    direction: desc
+
+
+- kind: LoggedErrorV2_<version>
+  properties:
+  - name: active
+  - name: environment
+  - name: lastOccurrence
+    direction: desc
+
+- kind: LoggedErrorV2_<version>
+  properties:
+  - name: project
+  - name: active
+  - name: environment
+  - name: lastOccurrence
+    direction: desc
+
+
+
+- kind: LoggedErrorV2_<version>
+  properties:
+  - name: active
+  - name: lastOccurrence
+    direction: desc
+
+- kind: LoggedErrorV2_<version>
+  properties:
+  - name: project
+  - name: active
+  - name: lastOccurrence
+    direction: desc
+
+
+################################
+# Indexes for error instances. #
+################################
+
+# Instances for a given error.
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: error
+  - name: date
+    direction: desc
+
+
+# Affected user + filters.
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: affectedUser
+  - name: date
+    direction: desc
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: project
+  - name: affectedUser
+  - name: date
+    direction: desc
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: error
+  - name: affectedUser
+  - name: date
+    direction: desc
+
+
+# Affected server + filters.
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: server
+  - name: date
+    direction: desc
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: project
+  - name: server
+  - name: date
+    direction: desc
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: error
+  - name: server
+  - name: date
+    direction: desc
+
+
+# Affected environment + filters.
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: environment
+  - name: date
+    direction: desc
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: project
+  - name: environment
+  - name: date
+    direction: desc
+
+- kind: LoggedErrorInstanceV2_<version>
+  properties:
+  - name: error
+  - name: environment
+  - name: date
+    direction: desc

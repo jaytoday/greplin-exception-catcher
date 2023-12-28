@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright 2011 The greplin-exception-catcher Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,24 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Setup script for greplin.gec.twistedLog."""
+"""Configuration utilities."""
 
 try:
-  from setuptools import setup
+  from django.utils import simplejson as json
 except ImportError:
-  from distutils.core import setup
+  import json
 
-setup(name='gec-twisted-logger',
-      version='0.1',
-      description='Exception catching for Twisted',
-      license='Apache',
-      author='Greplin, Inc.',
-      author_email='opensource@greplin.com',
-      url='https://www.github.com/Cue/greplin-exception-catcher',
-      packages = [ 'greplin' ],
-      namespace_packages = [ 'greplin' ],
-      py_modules = [
-        'greplin.gec.twistedLog'
-      ],
-      zip_safe = True
-)
+
+def _loadConfig():
+  """Loads application configuration."""
+  f = open('config.json')
+  try:
+    return json.loads(f.read())
+  finally:
+    f.close()
+
+
+CONFIG = _loadConfig()
+
+
+def get(key, default = None):
+  """Gets a configuration value."""
+  return CONFIG.get(key, default)

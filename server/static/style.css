@@ -27,6 +27,7 @@ h1 {
 table {
   border-spacing: 0;
   width: 100%;
+  table-layout:fixed;
 }
 
 .error-type, .error-message {
@@ -65,7 +66,8 @@ a.message {
 }
 
 .environments a, .servers a {
-  color: #555
+  color: #555;
+  white-space: nowrap;
 }
 
 #filters {

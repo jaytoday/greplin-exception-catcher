@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright 2011 The greplin-exception-catcher Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,24 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Setup script for greplin.gec.twistedLog."""
+"""Mapper that deletes everything."""
 
-try:
-  from setuptools import setup
-except ImportError:
-  from distutils.core import setup
+from mapreduce import operation as op
 
-setup(name='gec-twisted-logger',
-      version='0.1',
-      description='Exception catching for Twisted',
-      license='Apache',
-      author='Greplin, Inc.',
-      author_email='opensource@greplin.com',
-      url='https://www.github.com/Cue/greplin-exception-catcher',
-      packages = [ 'greplin' ],
-      namespace_packages = [ 'greplin' ],
-      py_modules = [
-        'greplin.gec.twistedLog'
-      ],
-      zip_safe = True
-)
+
+def process(entity):
+  """Process an entity by deleting it."""
+  yield op.db.Delete(entity)
